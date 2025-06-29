@@ -41,8 +41,11 @@ func _ready():
 	currentwindow.grab_focus()
 	set_tween_topbg()
 	set_tween_bottombg()
-	# for context: var currentwindow = get_window()
-	self.set_size(currentwindow.get_size())
+	if str(OS.get_name()) == "Linux": # The normal implementation (in the else: statement) doesn't work when compiling for Linux. Havent checked any other OS (ex. MacOS)
+		var h = Vector2i(DisplayServer.screen_get_size()) 
+		self.set_size(h) # This also could fix the issue with larger displays, but I have no way to test since I have an 1080p
+	else:
+		self.set_size(currentwindow.get_size()) # for context: var currentwindow = get_window()
 	if VariableKeeper.sixteen_by_nine_reso or debug:
 		sixteenbyninecontrol.set_size(Vector2((currentwindow.size.y * 16 / 9), currentwindow.size.y))
 		sixteenbyninecontrol.position.x = currentwindow.size.x / 2 - sixteenbyninecontrol.size.x / 2
